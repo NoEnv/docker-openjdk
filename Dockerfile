@@ -1,1 +1,1 @@
-FROM openjdk:12-jdk
+FROM openjdk:12.0.1-jdk

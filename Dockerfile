@@ -1,1 +1,3 @@
-FROM openjdk:12.0.2-jdk
+FROM openjdk:13-jdk-slim-buster
+
+RUN ln -s /usr/java/openjdk-13 /docker-java-home

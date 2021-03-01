@@ -1,7 +1,5 @@
 FROM openjdk:15.0.2-jdk-slim-buster as builder
 
-COPY cacerts /usr/local/openjdk-15/lib/security/
-
 RUN /usr/local/openjdk-15/bin/jlink \
   --no-header-files \
   --no-man-pages \
@@ -9,6 +7,8 @@ RUN /usr/local/openjdk-15/bin/jlink \
   --include-locales en-US,zh-CN,ru-RU,fr-FR,es-ES,en-GB,de-DE,pt-BR,en-CA,es-MX,it-IT,ja-JP \
   --compress 2 \
   --output /usr/local/openjdk-15-slim
+
+COPY cacerts /usr/local/openjdk-15-slim/lib/security/
 
 FROM debian:buster-slim
 

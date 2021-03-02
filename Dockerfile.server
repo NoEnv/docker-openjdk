@@ -3,7 +3,7 @@ FROM openjdk:15.0.2-jdk-slim-buster as builder
 RUN /usr/local/openjdk-15/bin/jlink \
   --no-header-files \
   --no-man-pages \
-  --add-modules java.base,java.prefs,java.naming,java.management,java.logging,java.sql,java.xml,java.compiler,jdk.management,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.localedata,jdk.naming.dns,jdk.unsupported \
+  --add-modules java.base,java.prefs,java.naming,java.management,java.logging,java.sql,java.xml,java.compiler,java.instrument,jdk.management,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.localedata,jdk.naming.dns,jdk.unsupported \
   --include-locales en-US,zh-CN,ru-RU,fr-FR,es-ES,en-GB,de-DE,pt-BR,en-CA,es-MX,it-IT,ja-JP \
   --compress 2 \
   --output /usr/local/openjdk-15-slim

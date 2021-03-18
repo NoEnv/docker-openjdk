@@ -1,5 +1,5 @@
-FROM openjdk:15.0.2-jdk-slim-buster
+FROM openjdk:16-jdk-slim-buster
 
-RUN ln -s /usr/local/openjdk-15 /docker-java-home
+RUN ln -s /usr/local/openjdk-16 /docker-java-home
 
-COPY cacerts /usr/local/openjdk-15/lib/security/
+COPY cacerts /usr/local/openjdk-16/lib/security/

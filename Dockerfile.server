@@ -1,4 +1,4 @@
-FROM openjdk:16.0.1-jdk-slim-buster as builder
+FROM openjdk:16.0.2-jdk-slim-buster as builder
 
 RUN /usr/local/openjdk-16/bin/jlink \
   --no-header-files \
@@ -15,7 +15,7 @@ FROM debian:buster-slim
 ENV JAVA_HOME /usr/local/openjdk-16
 ENV PATH $JAVA_HOME/bin:$PATH
 ENV LANG C.UTF-8
-ENV JAVA_VERSION 16.0.1
+ENV JAVA_VERSION 16.0.2
 
 COPY --from=builder /usr/local/openjdk-16-slim /usr/local/openjdk-16
 

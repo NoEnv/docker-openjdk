@@ -1,4 +1,4 @@
-FROM openjdk:16.0.1-jdk-slim-buster
+FROM openjdk:16.0.2-jdk-slim-buster
 
 RUN ln -s /usr/local/openjdk-16 /docker-java-home
 

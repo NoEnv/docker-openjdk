@@ -1,6 +1,7 @@
-FROM ubuntu:20.04
+FROM debian:bullseye-slim
 
 RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends tzdata curl ca-certificates fontconfig locales binutils && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \

@@ -1,6 +1,7 @@
-FROM ubuntu:20.04 as builder
+FROM debian:bullseye-slim as builder
 
 RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends tzdata curl ca-certificates fontconfig locales binutils && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
@@ -38,7 +39,7 @@ RUN /usr/local/openjdk/bin/jlink \
 
 COPY cacerts /usr/local/openjdk-slim/lib/security/
 
-FROM ubuntu:20.04
+FROM debian:bullseye-slim
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
@@ -50,7 +51,8 @@ ENV LANG=en_US.UTF-8 \
 COPY --from=builder /usr/local/openjdk-slim /usr/local/openjdk
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends tzdata ca-certificates fontconfig locales binutils && \
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y --no-install-recommends tzdata fontconfig locales binutils && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
     apt-get clean -y && \

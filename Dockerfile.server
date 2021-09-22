@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as builder
+FROM debian:buster-slim as builder
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
@@ -39,7 +39,7 @@ RUN /usr/local/openjdk/bin/jlink \
 
 COPY cacerts /usr/local/openjdk-slim/lib/security/
 
-FROM debian:bullseye-slim
+FROM debian:buster-slim
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \

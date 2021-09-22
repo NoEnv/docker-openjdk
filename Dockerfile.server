@@ -1,24 +1,60 @@
-FROM openjdk:17-jdk-slim-buster as builder
+FROM ubuntu:20.04 as builder
 
-RUN /usr/local/openjdk-17/bin/jlink \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends tzdata curl ca-certificates fontconfig locales binutils && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen en_US.UTF-8 && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    ARCH="$(dpkg --print-architecture)" && \
+    case "${ARCH}" in \
+       aarch64|arm64) \
+         ESUM='e08e6d8c84da28a2c49ccd511f8835c329fbdd8e4faff662c58fa24cca74021d'; \
+         BINARY_URL='https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17%2B35/OpenJDK17-jdk_aarch64_linux_hotspot_17_35.tar.gz'; \
+         ;; \
+       amd64|i386:x86-64) \
+         ESUM='6f1335d9a7855159f982dac557420397be9aa85f3f7bc84e111d25871c02c0c7'; \
+         BINARY_URL='https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17%2B35/OpenJDK17-jdk_x64_linux_hotspot_17_35.tar.gz'; \
+         ;; \
+       *) \
+         echo "Unsupported arch: ${ARCH}"; \
+         exit 1; \
+         ;; \
+    esac; \
+    curl -LfsSo /tmp/openjdk.tar.gz ${BINARY_URL} && \
+    echo "${ESUM} */tmp/openjdk.tar.gz" | sha256sum -c - && \
+    mkdir -p /usr/local/openjdk && \
+    cd /usr/local/openjdk && \
+    tar -xf /tmp/openjdk.tar.gz --strip-components=1 && \
+    rm -rf /tmp/openjdk.tar.gz
+
+RUN /usr/local/openjdk/bin/jlink \
   --no-header-files \
   --no-man-pages \
   --add-modules java.base,java.prefs,java.naming,java.management,java.logging,java.sql,java.xml,java.compiler,java.instrument,java.desktop,jdk.management,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.localedata,jdk.naming.dns,jdk.unsupported \
   --include-locales en-US,zh-CN,ru-RU,fr-FR,es-ES,en-GB,de-DE,pt-BR,en-CA,es-MX,it-IT,ja-JP \
   --compress 2 \
-  --output /usr/local/openjdk-17-slim
+  --output /usr/local/openjdk-slim
 
-COPY cacerts /usr/local/openjdk-17-slim/lib/security/
+COPY cacerts /usr/local/openjdk-slim/lib/security/
 
-FROM debian:buster-slim
+FROM ubuntu:20.04
 
-ENV JAVA_HOME /usr/local/openjdk-17
-ENV PATH $JAVA_HOME/bin:$PATH
-ENV LANG C.UTF-8
-ENV JAVA_VERSION 17.0.0
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8 \
+    JAVA_VERSION=jdk-17+35 \
+    JAVA_HOME=/usr/local/openjdk \
+    PATH="/usr/local/openjdk/bin:$PATH"
 
-COPY --from=builder /usr/local/openjdk-17-slim /usr/local/openjdk-17
+COPY --from=builder /usr/local/openjdk-slim /usr/local/openjdk
 
-RUN ln -s /usr/local/openjdk-17 /docker-java-home
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends tzdata ca-certificates fontconfig locales binutils && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen en_US.UTF-8 && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/* && \
+    ln -s /usr/local/openjdk /docker-java-home
 
 CMD ["java", "--version"]

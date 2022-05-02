@@ -10,12 +10,12 @@ RUN apt-get update && \
     ARCH="$(dpkg --print-architecture)" && \
     case "${ARCH}" in \
        aarch64|arm64) \
-         ESUM='e696d2b5995ae008b6ee7392d73ace13c36460a5e9600740c40e094079a62d28'; \
-         BINARY_URL='https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18%2B36/OpenJDK18U-jdk_aarch64_linux_hotspot_18_36.tar.gz'; \
+         ESUM='37ceaf232a85cce46bcccfd71839854e8b14bf3160e7ef72a676b9cae45ee8af'; \
+         BINARY_URL='https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18.0.1%2B10/OpenJDK18U-jdk_aarch64_linux_hotspot_18.0.1_10.tar.gz'; \
          ;; \
        amd64|i386:x86-64) \
-         ESUM='82d67983f92f16b5fb57176fa4c228e44ecc6f671b3c3523140fba7fb904dceb'; \
-         BINARY_URL='https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18%2B36/OpenJDK18U-jdk_x64_linux_hotspot_18_36.tar.gz'; \
+         ESUM='16b1d9d75f22c157af04a1fd9c664324c7f4b5163c022b382a2f2e8897c1b0a2'; \
+         BINARY_URL='https://github.com/adoptium/temurin18-binaries/releases/download/jdk-18.0.1%2B10/OpenJDK18U-jdk_x64_linux_hotspot_18.0.1_10.tar.gz'; \
          ;; \
        *) \
          echo "Unsupported arch: ${ARCH}"; \
@@ -44,7 +44,7 @@ FROM debian:bullseye-slim
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8 \
-    JAVA_VERSION=jdk-18+36 \
+    JAVA_VERSION=jdk-18.0.1+10 \
     JAVA_HOME=/usr/local/openjdk \
     PATH="/usr/local/openjdk/bin:$PATH"
 

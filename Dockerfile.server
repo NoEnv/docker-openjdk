@@ -32,7 +32,7 @@ RUN apt-get update && \
 RUN /usr/local/openjdk/bin/jlink \
   --no-header-files \
   --no-man-pages \
-  --add-modules java.base,java.prefs,java.naming,java.management,java.logging,java.sql,java.xml,java.xml.crypto,,java.compiler,java.instrument,java.desktop,jdk.management,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.localedata,jdk.naming.dns,jdk.unsupported,java.security.jgss \
+  --add-modules java.base,java.prefs,java.naming,java.management,java.logging,java.sql,java.xml,java.xml.crypto,java.compiler,java.instrument,java.desktop,jdk.management,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.localedata,jdk.naming.dns,jdk.unsupported,java.security.jgss \
   --include-locales en-US,zh-CN,ru-RU,fr-FR,es-ES,en-GB,de-DE,pt-BR,en-CA,es-MX,it-IT,ja-JP \
   --compress 2 \
   --output /usr/local/openjdk-slim

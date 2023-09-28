@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as builder
+FROM debian:bookworm-slim as builder
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
@@ -10,12 +10,12 @@ RUN apt-get update && \
     ARCH="$(dpkg --print-architecture)" && \
     case "${ARCH}" in \
        aarch64|arm64) \
-         ESUM='b475bcc23db0bd618c815bb8f11d8e084dc58288ea3bcdf4e7f389ed41c89f56'; \
-         BINARY_URL='https://github.com/adoptium/temurin20-binaries/releases/download/jdk-20.0.2%2B9/OpenJDK20U-jdk_aarch64_linux_hotspot_20.0.2_9.tar.gz'; \
+         ESUM='f541f545c0e8046c2b242a1701e5be4a7abda2ffbc150d7f96b6cd5571f17429'; \
+         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21%2B35-ea-beta/OpenJDK21U-jdk_aarch64_linux_hotspot_ea_21-0-35.tar.gz'; \
          ;; \
        amd64|i386:x86-64) \
-         ESUM='3d91842e9c172967ac397076523249d05a82ead51b0006838f5f0315ad52222c'; \
-         BINARY_URL='https://github.com/adoptium/temurin20-binaries/releases/download/jdk-20.0.2%2B9/OpenJDK20U-jdk_x64_linux_hotspot_20.0.2_9.tar.gz'; \
+         ESUM='b6586c432948134387b801add3b46048e3fb58390d74eea80e00c539016a54e6'; \
+         BINARY_URL='https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21%2B35-ea-beta/OpenJDK21U-jdk_x64_linux_hotspot_ea_21-0-35.tar.gz'; \
          ;; \
        *) \
          echo "Unsupported arch: ${ARCH}"; \
@@ -39,12 +39,12 @@ RUN /usr/local/openjdk/bin/jlink \
 
 COPY cacerts /usr/local/openjdk-slim/lib/security/
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8 \
-    JAVA_VERSION=jdk-20.0.2+9 \
+    JAVA_VERSION=jdk-21+35 \
     JAVA_HOME=/usr/local/openjdk \
     PATH="/usr/local/openjdk/bin:$PATH"
 

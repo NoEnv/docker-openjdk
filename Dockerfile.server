@@ -37,10 +37,11 @@ RUN /usr/local/openjdk/bin/jlink \
   --compress zip-6 \
   --output /usr/local/openjdk-slim
 
-RUN curl -LfsSo /tmp/noenv.ca.crt https://noenv.com/ca.pem && \
-    echo "2ecfa5dafd7d5e47313953ae0278f59657f9e3c8f8ee8b99b9cf5d31d45fd4dd */tmp/noenv.ca.crt" | sha256sum -c - && \
-    /usr/local/openjdk/bin/keytool -import -noprompt -trustcacerts -keystore /usr/local/openjdk-slim/lib/security/cacerts -storepass changeit -alias noenvca -file /tmp/noenv.ca.crt && \
-    rm -rf /tmp/noenv.ca.crt
+COPY ca-bundle /tmp/ca-bundle
+
+RUN /usr/local/openjdk/bin/keytool -import -noprompt -trustcacerts -keystore /usr/local/openjdk-slim/lib/security/cacerts -storepass changeit -alias noenv_ca -file /tmp/ca-bundle/noenv.pem && \
+    /usr/local/openjdk/bin/keytool -import -noprompt -trustcacerts -keystore /usr/local/openjdk-slim/lib/security/cacerts -storepass changeit -alias goldrush_ca -file /tmp/ca-bundle/goldrush.pem && \
+    rm -rf /tmp/ca-bundle
 
 FROM debian:bookworm-slim
 

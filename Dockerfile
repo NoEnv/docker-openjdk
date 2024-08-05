@@ -1,5 +1,7 @@
 FROM debian:bookworm-slim
 
+COPY ca-bundle /tmp/ca-bundle
+
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends tzdata curl ca-certificates fontconfig locales binutils && \
@@ -27,10 +29,9 @@ RUN apt-get update && \
     mkdir -p /usr/local/openjdk && \
     cd /usr/local/openjdk && \
     tar -xf /tmp/openjdk.tar.gz --strip-components=1 && \
-    curl -LfsSo /tmp/noenv.ca.crt https://noenv.com/ca.pem && \
-    echo "2ecfa5dafd7d5e47313953ae0278f59657f9e3c8f8ee8b99b9cf5d31d45fd4dd */tmp/noenv.ca.crt" | sha256sum -c - && \
-    /usr/local/openjdk/bin/keytool -import -noprompt -trustcacerts -cacerts -storepass changeit -alias noenvca -file /tmp/noenv.ca.crt && \
-    rm -rf /tmp/openjdk.tar.gz /tmp/noenv.ca.crt && \
+    /usr/local/openjdk/bin/keytool -import -noprompt -trustcacerts -cacerts -storepass changeit -alias noenv_ca -file /tmp/ca-bundle/noenv.pem && \
+    /usr/local/openjdk/bin/keytool -import -noprompt -trustcacerts -cacerts -storepass changeit -alias goldrush_ca -file /tmp/ca-bundle/goldrush.pem && \
+    rm -rf /tmp/openjdk.tar.gz /tmp/ca-bundle && \
     ln -s /usr/local/openjdk /docker-java-home
 
 ENV LANG=en_US.UTF-8 \

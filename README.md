@@ -2,5 +2,6 @@
 [![Quay.io Enabled](https://badgen.net/badge/quay%20pulls/enabled/green)](https://quay.io/repository/noenv/openjdk)
 [![build](https://github.com/NoEnv/docker-openjdk/actions/workflows/build.yml/badge.svg)](https://github.com/NoEnv/docker-openjdk/actions/workflows/build.yml)
 [![server](https://github.com/NoEnv/docker-openjdk/actions/workflows/server.yml/badge.svg)](https://github.com/NoEnv/docker-openjdk/actions/workflows/server.yml)
+[![Discord](https://badgen.net/discord/online-members/mZAjkQfYSj)](https://discord.gg/mZAjkQfYSj)
 
 # docker-openjdk

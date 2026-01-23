@@ -35,6 +35,7 @@ RUN /usr/local/openjdk/bin/jlink \
   --add-modules java.base,java.prefs,java.naming,java.management,java.logging,java.sql,java.xml,java.xml.crypto,java.compiler,java.instrument,java.desktop,jdk.management,jdk.crypto.cryptoki,jdk.crypto.ec,jdk.localedata,jdk.naming.dns,jdk.unsupported,java.security.jgss,jdk.jfr \
   --include-locales en-US,zh-CN,ru-RU,fr-FR,es-ES,en-GB,de-DE,pt-BR,en-CA,es-MX,it-IT,ja-JP \
   --compress zip-6 \
+  --generate-cds-archive \ 
   --output /usr/local/openjdk-slim
 
 COPY ca-bundle /tmp/ca-bundle

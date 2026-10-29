@@ -1,7 +1,5 @@
 FROM debian:trixie-slim
 
-COPY ca-bundle /tmp/ca-bundle
-
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get install -y --no-install-recommends tzdata curl ca-certificates fontconfig locales binutils && \
@@ -12,12 +10,12 @@ RUN apt-get update && \
     ARCH="$(dpkg --print-architecture)" && \
     case "${ARCH}" in \
        aarch64|arm64) \
-         ESUM='bb5b2ded252f21c6090cf780b0a408ad0d83bbb557e702955643557f13231880'; \
-         BINARY_URL='https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5%2B8/OpenJDK25U-jdk_aarch64_linux_hotspot_25.0.5_8.tar.gz'; \
+         ESUM='5ddacf925244a00b60cac828b61ff2f67a68cd32b8dfe5cee1405e333b4589e5'; \
+         BINARY_URL='https://github.com/adoptium/temurin27-binaries/releases/download/jdk-27.0.1.0.2%2B1/OpenJDK27U-jdk_aarch64_linux_hotspot_27.0.1.0.2_1.tar.gz'; \
          ;; \
        amd64|i386:x86-64) \
-         ESUM='68982529869257d0ee6b824ec5aa270ff8b118bb438670da0b97ebdab178d7fb'; \
-         BINARY_URL='https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.5%2B8/OpenJDK25U-jdk_x64_linux_hotspot_25.0.5_8.tar.gz'; \
+         ESUM='30cb129f6cf299c852cec0feca9ea2a596d2ee9f26d8605d3a253951f6c8b20f'; \
+         BINARY_URL='https://github.com/adoptium/temurin27-binaries/releases/download/jdk-27.0.1.0.2%2B1/OpenJDK27U-jdk_x64_linux_hotspot_27.0.1.0.2_1.tar.gz'; \
          ;; \
        *) \
          echo "Unsupported arch: ${ARCH}"; \
@@ -29,15 +27,13 @@ RUN apt-get update && \
     mkdir -p /usr/local/openjdk && \
     cd /usr/local/openjdk && \
     tar -xf /tmp/openjdk.tar.gz --strip-components=1 && \
-    /usr/local/openjdk/bin/keytool -import -noprompt -trustcacerts -cacerts -storepass changeit -alias noenv_ca -file /tmp/ca-bundle/noenv.pem && \
-    /usr/local/openjdk/bin/keytool -import -noprompt -trustcacerts -cacerts -storepass changeit -alias goldrush_ca -file /tmp/ca-bundle/goldrush.pem && \
-    rm -rf /tmp/openjdk.tar.gz /tmp/ca-bundle && \
+    rm -rf /tmp/openjdk.tar.gz && \
     ln -s /usr/local/openjdk /docker-java-home
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8 \
-    JAVA_VERSION=jdk-25.0.5+8 \
+    JAVA_VERSION=jdk-27.0.1.0.2+1 \
     JAVA_HOME=/usr/local/openjdk \
     PATH="/usr/local/openjdk/bin:$PATH"
 
